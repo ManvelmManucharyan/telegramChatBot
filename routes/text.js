@@ -13,10 +13,8 @@ class Text {
     }
 
     static async film (msg, bot) {
-        const chatId = msg.chat.id
-        const url =
-        "https://www.omdbapi.com/?t=the+dark+knight" + process.env.API_KEY;
-
+      const chatId = msg.chat.id
+      const url = "https://www.omdbapi.com/?t=the+dark+knight" + process.env.API_KEY;
       const request = https.request(url, (response) => {
         let data = "";
         response.on("data", (chunk) => {
@@ -24,23 +22,20 @@ class Text {
         });
         response.on("end", async () => {
           const body = JSON.parse(data);
-          console.log(body);
-          let picture =
-            body.Poster.slice(0, body.Poster.lastIndexOf("_") + 1) + "webp";
+          let picture = body.Poster.slice(0, body.Poster.lastIndexOf("_") + 1) + "webp";
           await bot.sendPhoto(chatId, `${picture}`);
-          return await bot.sendMessage(
-            chatId,
-            `Name - ${body.Title}
-                            Actors - ${body.Actors}
-                            Year - ${body.Year}
-                    `
-          );
+          return await bot.sendMessage(chatId,`Name - ${body.Title} Actors - ${body.Actors} Year - ${body.Year}`);
         });
       });
       request.on("error", (error) => {
         console.log("An error", error);
       });
       request.end();
+    }
+
+    static async default (msg, bot) {
+      const chatId = msg.chat.id
+      return await bot.sendMessage(chatId, `I dont understand`);
     }
 }
 
