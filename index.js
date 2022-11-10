@@ -1,5 +1,6 @@
-require("dotenv").config()
+require("dotenv").config();
 const TelegramApi = require("node-telegram-bot-api");
+const Text = require("./routes/text");
 
 const bot = new TelegramApi(process.env.TOKEN, { polling: true });
 
@@ -19,12 +20,9 @@ function start () {
         if (text === "/info") {
             return await bot.sendMessage(chatId, `Your name is ${msg.from.first_name} ${msg.from.last_name}`)
         }
-        if(text === "/game") {
-            await bot.sendMessage(chatId, '')
-        }
         return await bot.sendMessage(chatId, `I dont understand`)
 
     })
 }
 
-start()
+run();
