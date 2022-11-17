@@ -1,8 +1,8 @@
 class Commands {
 
-    static commands = ["/start", "/info", "/film", "/search"]
+    static commands = ["/start", "/info", "/film", "/button", "/search"]
 
-    static descriptions = ["Start Bot", "Info about you", "Find a film", "Search"]
+    static descriptions = ["Start Bot", "Info about you", "Find a film", "Button", "Search film"]
 
     static menu () {
         const result = [];
@@ -13,9 +13,18 @@ class Commands {
     }
 
     static searchOptions = {
-        replay_markup: JSON.stringify({
-        })
+        reply_markup: {
+            inline_keyboard: [
+                [{text: "Start", callback_data: "start"}, {text: "Info", callback_data: "info"}]
+            ]
+        }
     }
+
+    static search = {
+        reply_markup: {
+            force_reply: false,
+        },
+      }
 }
 
 module.exports = Commands
