@@ -10,7 +10,8 @@ function run() {
   bot.on("message", async (msg) => {
     try {
       const text = msg.text;
-      Commands.commands.includes(text) ? Text[text.slice(1)](msg, bot) : Text.default(msg, bot);
+      const chatId = msg.chat.id
+      Commands.commands.includes(text) ? Text[text.slice(1)](chatId, bot, text, msg) : Text.default(chatId, bot, msg);
     } catch (error) {
       console.log(error);
     }
