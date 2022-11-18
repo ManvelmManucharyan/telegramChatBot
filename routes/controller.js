@@ -1,18 +1,30 @@
 const https = require("https");
-const Commands = require("./commands");
+const Commands = require("./commands")
 
 class Controller {
     static async sendMessage(chatId, bot, text, button) {
-        return await bot.sendMessage(chatId, text, button)
+      try{
+        return await bot.sendMessage(chatId, text, button);
+      }catch (error){
+        console.log(error);
+      }
     }
 
     static async sendSticker(chatId, bot, url) {
+      try{
         return await bot.sendSticker(chatId, url);
+      }catch (error){
+        console.log(error);
+      }
     }
 
     static async sendPhoto(chatId, bot, url) {
+      try{
         let picture = url.slice(0, url.lastIndexOf("_") + 1) + "webp";
         return await bot.sendPhoto(chatId, picture);
+      }catch (error){
+        console.log(error);
+      }
     }
 
     static async getFilm(chatId, bot, name, option) {
@@ -32,13 +44,15 @@ class Controller {
           console.log("An error", error);
         });
         request.end();
+      }catch (error){
+        console.log(error);
+      }
     }
 
     static async question(chatId, bot, text, option) {
       let a = await bot.sendMessage(chatId, text, {
         reply_markup: JSON.stringify({ force_reply: true }),
       })
-
       bot.onReplyToMessage(
           a.chat.id,
           a.message_id,

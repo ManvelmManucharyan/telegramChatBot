@@ -1,6 +1,6 @@
 require("dotenv").config();
 const TelegramApi = require("node-telegram-bot-api");
-const Text = require("./routes/service");
+const Service = require("./routes/service");
 const Commands = require("./routes/commands");
 const bot = new TelegramApi(process.env.TOKEN, { polling: true });
 
@@ -15,6 +15,12 @@ function run() {
     } catch (error) {
       console.log(error);
     }
+  });
+
+  bot.on("callback_query", async msg => {
+    const text = msg.message.text;
+    const chatId = msg.message.chat.id
+    Service[msg.data](chatId, bot, msg) 
   });
 }
 

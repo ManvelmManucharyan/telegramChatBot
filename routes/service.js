@@ -21,4 +21,4 @@ class Text {
     }
 }
 
-module.exports = Text
+module.exports = Service
