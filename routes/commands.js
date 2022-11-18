@@ -20,11 +20,17 @@ class Commands {
         }
     }
 
-    static search = {
-        reply_markup: {
-            force_reply: false,
-        },
-      }
+    static filmSchema(body) {
+        console.log(body);
+        return `
+        <span class="tg-spoiler"><b>${body.Title}</b></span>
+        
+        Genres ${body.Genre}
+
+        ${body.Plot}
+        
+        `
+    }
 }
 
 module.exports = Commands

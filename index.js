@@ -11,9 +11,7 @@ function run() {
     try {
       const text = msg.text;
       const chatId = msg.chat.id
-      if(text === "Write film"){
-      }
-      Commands.commands.includes(text) ? Service[text.slice(1)](chatId, bot, msg) : Service.default(chatId, bot);
+      Commands.commands.includes(text) ? Text[text.slice(1)](chatId, bot, text, msg) : Text.default(chatId, bot, msg);
     } catch (error) {
       console.log(error);
     }
