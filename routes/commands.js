@@ -1,8 +1,8 @@
 class Commands {
 
-    static commands = ["/start", "/info", "/film", "/search"]
+    static commands = ["/start", "/film", "/search"]
 
-    static descriptions = ["Start Bot", "Info about you", "Find a film", "Search"]
+    static descriptions = ["Start Bot", "Find a film", "Search"]
 
     static menu () {
         const result = [];
@@ -15,6 +15,18 @@ class Commands {
     static searchOptions = {
         replay_markup: JSON.stringify({
         })
+    }
+
+    static filmSchema(body) {
+        console.log(body);
+        return `
+        <span class="tg-spoiler"><b>${body.Title}</b></span>
+        
+        Genres ${body.Genre}
+
+        ${body.Plot}
+        
+        `
     }
 }
 

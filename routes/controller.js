@@ -1,8 +1,9 @@
 const https = require("https");
+const Commands = require("./commands");
 
 class Controller {
-    static async sendMessage(chatId, bot, text) {
-        return await bot.sendMessage(chatId, text);
+    static async sendMessage(chatId, bot, text, button) {
+        return await bot.sendMessage(chatId, text, button)
     }
 
     static async sendSticker(chatId, bot, url) {
@@ -14,8 +15,8 @@ class Controller {
         return await bot.sendPhoto(chatId, picture);
     }
 
-    static async getOneFilm(chatId, bot, name) {
-        const url = `https://www.omdbapi.com/?t=${name.split(" ").join("+")}${process.env.API_KEY}`;
+    static async getFilm(chatId, bot, name, option) {
+        const url = `https://www.omdbapi.com/?${option}=${name.split(" ").join("+")}${process.env.API_KEY}`;
         const request = https.request(url, (response) => {
           let data = "";
           response.on("data", (chunk) => {
@@ -24,7 +25,7 @@ class Controller {
           response.on("end", async () => {
             const body = JSON.parse(data);
             await this.sendPhoto(chatId, bot, body.Poster);
-            return await this.sendMessage(chatId, bot, `Name - ${body.Title} Actors - ${body.Actors} Year - ${body.Year}`)
+            return await this.sendMessage(chatId, bot, Commands.filmSchema(body), { parse_mode: "HTML" })
           });
         });
         request.on("error", (error) => {
@@ -33,26 +34,21 @@ class Controller {
         request.end();
     }
 
-    static async search(chatId, bot, text) {
-        await this.sendMessage(chatId, bot, "Write film name")
-        const url = `https://www.omdbapi.com/?s=${text.split(" ").join("+")}${process.env.API_KEY}`;
-        const request = https.request(url, (response) => {
-          let data = "";
-          response.on("data", (chunk) => {
-            data = data + chunk.toString();
-          });
-          response.on("end", async () => {
-            const body = JSON.parse(data);
-            await this.sendPhoto(chatId, bot, body.Poster);
-            return await this.sendMessage(chatId, bot, `Name - ${body.Title} Actors - ${body.Actors} Year - ${body.Year}`)
-          });
-        });
-        request.on("error", (error) => {
-          console.log("An error", error);
-        });
-        request.end();
-    }
+    static async question(chatId, bot, text, option) {
+      let a = await bot.sendMessage(chatId, text, {
+        reply_markup: JSON.stringify({ force_reply: true }),
+      })
 
+      bot.onReplyToMessage(
+          a.chat.id,
+          a.message_id,
+          async msg => {
+            console.log(msg);
+            text = msg.text
+            await this.getFilm(chatId, bot, text, option);
+          }
+        )
+    }
 }
 
 module.exports = Controller
