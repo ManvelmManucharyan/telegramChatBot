@@ -49,7 +49,7 @@ class Controller {
             const body = JSON.parse(data);
             if(body.Error){
               await this.sendSticker(chatId, bot, Commands.errorPhotos[Math.floor(Math.random() * Commands.errorPhotos.length)])
-              return this.sendMessage(chatId, bot, `Sorry, I did't find anything`)
+              return this.sendMessage(chatId, bot, `Sorry, I didn't find anything`)
             }
             if(option === 't' || option === 'i'){
               await this.sendPhoto(chatId, bot, body.Poster);
